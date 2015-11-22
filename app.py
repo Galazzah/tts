@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 ###
@@ -58,7 +58,8 @@ conn.request("POST", "/synthesize", body, headers)
 response = conn.getresponse()
 print(response.status, response.reason)
 
-data = response.read()
+encoded = response.read()
+
 conn.close()
 #print("The synthesized wave length: %d" %(len(data)))
 
@@ -67,11 +68,15 @@ conn.close()
 
 @app.route('/')
 def home():
-	return render_template('index.html', title = 'home', wavfile = 'data:audo/mps;base64' + data)
+	return render_template('index.html', title = 'home', wavfile = encoded)
+	
+@app.route('/cool')
+def cool():
+	return 'hello'
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
 	
 	
 
