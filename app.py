@@ -13,7 +13,9 @@ import http.client, urllib.parse, json, base64
 from token import *
 from tokens import *
 
-
+#Note: Sign up at http://www.projectoxford.ai to get a subscription key.  
+#Search for Speech APIs from Azure Marketplace.
+#Use the subscription key as Client secret below.
 
 ttsHost = "https://speech.platform.bing.com"
 
@@ -42,10 +44,10 @@ print ("Oxford Access Token: " + accesstoken)
 ddata=json.loads(accesstoken)
 access_token = ddata['access_token']
 
-body = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-us' xml:gender='Female' name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>Hello World</voice></speak>"
+body = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-us' xml:gender='Female' name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>Say Hello to my little friend</voice></speak>"
 
 headers = {"Content-type": "application/ssml+xml", 
-			"X-Microsoft-OutputFormat": "riff-16khz-16bit-mono-pcm", 
+			"X-Microsoft-OutputFormat": "riff-8khz-8bit-mono-mulaw", 
 			"Authorization": "Bearer " + access_token, 
 			"X-Search-AppId": "07D3234E49CE426DAA29772419F436CA", 
 			"X-Search-ClientID": "1ECFAE91408841A480F00935DC390960", 
@@ -57,17 +59,33 @@ conn.request("POST", "/synthesize", body, headers)
 response = conn.getresponse()
 print(response.status, response.reason)
 
-encoded = base64.b64encode(response.read())
+data = response.read()
+
+print(data)
+
+
+print(type(data))
+
+#data = str(response.read())
+#print(data)
+encoded = base64.b64encode(data)
+print(encoded)
+
+s = str(encoded)
+sliced = s[2:-1]
+print(sliced)
 
 conn.close()
 #print("The synthesized wave length: %d" %(len(data)))
 
 
-
-
 @app.route('/')
 def home():
-	return render_template('index.html', title = 'home', wavfile = encoded)
+	return render_template(
+		'index.html', 
+		title = 'home', 
+		wavfile = sliced
+	)
 	
 @app.route('/cool')
 def cool():
