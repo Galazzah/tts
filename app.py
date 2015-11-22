@@ -10,12 +10,11 @@ app = Flask(__name__)
 #THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ###
 import http.client, urllib.parse, json, base64
+from token import *
+from tokens import *
 
-#Note: Sign up at http://www.projectoxford.ai to get a subscription key.  
-#Search for Speech APIs from Azure Marketplace.
-#Use the subscription key as Client secret below.
-clientId = "Azure_2d404b0bcf-0264-4d44-B30f-910db87d736f"
-clientSecret = "e55a33d20e2b4d87b0e2c756f9b9ed0b"
+
+
 ttsHost = "https://speech.platform.bing.com"
 
 params = urllib.parse.urlencode({'grant_type': 'client_credentials', 'client_id': clientId, 'client_secret': clientSecret, 'scope': ttsHost})
@@ -58,7 +57,7 @@ conn.request("POST", "/synthesize", body, headers)
 response = conn.getresponse()
 print(response.status, response.reason)
 
-encoded = response.read()
+encoded = base64.b64encode(response.read())
 
 conn.close()
 #print("The synthesized wave length: %d" %(len(data)))
