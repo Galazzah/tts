@@ -3,7 +3,7 @@ This is a python demonstration of the Bing/Project Oxford API TTS service.
 
 [Here's an example in C#](https://onedrive.live.com/prev?cid=09a8c02c3b59e575&id=9A8C02C3B59E575%21123&v=TextFileEditor) 
 
-Get your access code here: https://dev.projectoxford.ai/ 
+Get your access code here: https://www.projectoxford.ai/Subscription (Client-ID is your Microsoft account ID and Client-Secret is your TTS API subscription key)
 
 Python 3 and flask implementation 
 
